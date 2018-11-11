@@ -29,10 +29,6 @@
         <start-class>my.mmshulga.sfgpetclinic.SfgPetClinicApplication</start-class>
     </properties>
 
-    <dependencies>
-
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>
