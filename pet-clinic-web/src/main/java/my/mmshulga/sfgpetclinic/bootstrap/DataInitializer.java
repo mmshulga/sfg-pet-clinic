@@ -25,8 +25,8 @@ public class DataInitializer implements CommandLineRunner {
         int numCreated = 10;
         for (long i = 0; i < numCreated; i++) {
             Owner owner = new Owner();
-            owner.setFirstName("FirstName#"+i);
-            owner.setLastName("LastName#"+i);
+            owner.setFirstName("OwnerFirstName#"+i);
+            owner.setLastName("OwnerLastName#"+i);
             owner.setId(i);
             ownerService.save(owner);
         }
@@ -34,8 +34,8 @@ public class DataInitializer implements CommandLineRunner {
 
         for (long i = 0; i < numCreated; i++) {
             Vet vet = new Vet();
-            vet.setFirstName("FirstName#"+i);
-            vet.setLastName("LastName#"+i);
+            vet.setFirstName("VetFirstName#"+i);
+            vet.setLastName("VetLastName#"+i);
             vet.setId(i);
             vetService.save(vet);
         }
