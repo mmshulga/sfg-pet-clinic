@@ -13,7 +13,8 @@ public abstract class AbstractMapService<T, ID> {
     }
 
     public T save(ID id, T object) {
-        return map.put(id, object);
+        map.put(id, object);
+        return object;
     }
 
     public Set<T> findAll() {
