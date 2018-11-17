@@ -1,11 +1,9 @@
 package my.mmshulga.sfgpetclinic.bootstrap;
 
-import my.mmshulga.sfgpetclinic.model.Owner;
-import my.mmshulga.sfgpetclinic.model.Pet;
-import my.mmshulga.sfgpetclinic.model.PetType;
-import my.mmshulga.sfgpetclinic.model.Vet;
+import my.mmshulga.sfgpetclinic.model.*;
 import my.mmshulga.sfgpetclinic.services.OwnerService;
 import my.mmshulga.sfgpetclinic.services.PetTypeService;
+import my.mmshulga.sfgpetclinic.services.SpecialtyService;
 import my.mmshulga.sfgpetclinic.services.VetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,17 +17,25 @@ public class DataInitializer implements CommandLineRunner {
     private final OwnerService ownerService;
     private final VetService vetService;
     private final PetTypeService petTypeService;
+    private final SpecialtyService specialtyService;
 
     @Autowired
-    public DataInitializer(OwnerService ownerService, VetService vetService, PetTypeService petTypeService) {
-        this.ownerService   = ownerService;
-        this.vetService     = vetService;
-        this.petTypeService = petTypeService;
+    public DataInitializer(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialtyService specialtyService) {
+        this.ownerService       = ownerService;
+        this.vetService         = vetService;
+        this.petTypeService     = petTypeService;
+        this.specialtyService   = specialtyService;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        int count = petTypeService.findAll().size();
+        if (count == 0L) {
+            loadData();
+        }
+    }
 
+    private void loadData() {
         PetType dog = new PetType();
         dog.setName("dog");
         dog.setId(1L);
@@ -68,11 +74,29 @@ public class DataInitializer implements CommandLineRunner {
         }
         System.out.println("Loaded owners ...");
 
+        Specialty radiology = new Specialty();
+        radiology.setDescription("radiology");
+        radiology.setId(1L);
+        Specialty radiologySaved = specialtyService.save(radiology);
+
+        Specialty surgery = new Specialty();
+        surgery.setDescription("surgery");
+        surgery.setId(2L);
+        Specialty surgerySaved = specialtyService.save(surgery);
+
         for (long i = 0; i < numCreated; i++) {
             Vet vet = new Vet();
             vet.setFirstName("VetFirstName#"+i);
             vet.setLastName("VetLastName#"+i);
             vet.setId(i);
+
+            if (i < numCreated / 2) {
+                vet.getSpecialties().add(radiologySaved);
+            }
+            else {
+                vet.getSpecialties().add(surgerySaved);
+            }
+
             vetService.save(vet);
         }
         System.out.println("Loaded pets ...");
