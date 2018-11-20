@@ -43,7 +43,7 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
             });
         }
 
-        return save(object.getId(), object);
+        return save(counter.getAndIncrement(), object);
     }
 
     @Override

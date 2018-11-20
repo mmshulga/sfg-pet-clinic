@@ -1,15 +1,15 @@
 package my.mmshulga.sfgpetclinic.services.map;
 
-import my.mmshulga.sfgpetclinic.model.PetType;
-import my.mmshulga.sfgpetclinic.services.PetTypeService;
+import my.mmshulga.sfgpetclinic.model.Visit;
+import my.mmshulga.sfgpetclinic.services.VisitService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
 @Profile("map")
-public class PetTypeMapService extends AbstractMapService<PetType, Long> implements PetTypeService {
+public class VisitMapService extends AbstractMapService<Visit, Long> implements VisitService {
     @Override
-    public PetType save(PetType object) {
+    public Visit save(Visit object) {
         return save(counter.getAndIncrement(), object);
     }
 }

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Service;
 public class SpecialtyMapService extends AbstractMapService<Specialty, Long> implements SpecialtyService {
     @Override
     public Specialty save(Specialty object) {
-        return save(object.getId(), object);
+        return save(counter.getAndIncrement(), object);
     }
 }

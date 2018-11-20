@@ -38,12 +38,10 @@ public class DataInitializer implements CommandLineRunner {
     private void loadData() {
         PetType dog = new PetType();
         dog.setName("dog");
-        dog.setId(1L);
         PetType savedDog = petTypeService.save(dog);
 
         PetType cat = new PetType();
         cat.setName("cat");
-        cat.setId(2L);
         PetType savedCat = petTypeService.save(cat);
 
         long numCreated = 10;
@@ -51,7 +49,6 @@ public class DataInitializer implements CommandLineRunner {
             Owner owner = new Owner();
             owner.setFirstName("OwnerFirstName#"+i);
             owner.setLastName("OwnerLastName#"+i);
-            owner.setId(i);
             owner.setAddress("Address for #"+i);
             owner.setCity("City#"+i);
             owner.setTelephone("telephone#"+i);
@@ -64,7 +61,6 @@ public class DataInitializer implements CommandLineRunner {
                 pet.setPetType(savedCat);
             }
             pet.setOwner(owner);
-            pet.setId(i);
             pet.setBirthDate(LocalDate.now());
             pet.setName("Pet #"+i);
 
@@ -76,19 +72,16 @@ public class DataInitializer implements CommandLineRunner {
 
         Specialty radiology = new Specialty();
         radiology.setDescription("radiology");
-        radiology.setId(1L);
         Specialty radiologySaved = specialtyService.save(radiology);
 
         Specialty surgery = new Specialty();
         surgery.setDescription("surgery");
-        surgery.setId(2L);
         Specialty surgerySaved = specialtyService.save(surgery);
 
         for (long i = 0; i < numCreated; i++) {
             Vet vet = new Vet();
             vet.setFirstName("VetFirstName#"+i);
             vet.setLastName("VetLastName#"+i);
-            vet.setId(i);
 
             if (i < numCreated / 2) {
                 vet.getSpecialties().add(radiologySaved);

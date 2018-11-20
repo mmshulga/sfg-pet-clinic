@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class AbstractMapService<T, ID> {
     protected Map<ID, T> map = new HashMap<>();
+    protected final AtomicLong counter = new AtomicLong(0);
 
     public T findById(ID id) {
         return map.get(id);
