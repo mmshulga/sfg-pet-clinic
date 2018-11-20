@@ -7,9 +7,11 @@ import my.mmshulga.sfgpetclinic.services.OwnerService;
 import my.mmshulga.sfgpetclinic.services.PetService;
 import my.mmshulga.sfgpetclinic.services.PetTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
+@Profile("map")
 public class OwnerMapService extends AbstractMapService<Owner, Long> implements OwnerService {
 
     private final PetService petService;
