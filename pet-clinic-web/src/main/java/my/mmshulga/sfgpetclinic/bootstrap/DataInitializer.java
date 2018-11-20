@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -46,23 +47,21 @@ public class DataInitializer implements CommandLineRunner {
 
         long numCreated = 10;
         for (long i = 0; i < numCreated; i++) {
-            Owner owner = new Owner();
-            owner.setFirstName("OwnerFirstName#"+i);
-            owner.setLastName("OwnerLastName#"+i);
-            owner.setAddress("Address for #"+i);
-            owner.setCity("City#"+i);
-            owner.setTelephone("telephone#"+i);
+            Owner owner = Owner.builder()
+                    .firstName("OwnerFirstName#"+i)
+                    .lastName("OwnerLastName#"+i)
+                    .address("Address for #"+i)
+                    .city("City#"+i)
+                    .telephone("telephone#"+i)
+                    .pets(new HashSet<>())
+                    .build();
 
-            Pet pet = new Pet();
-            if (i < numCreated / 2) {
-                pet.setPetType(savedDog);
-            }
-            else {
-                pet.setPetType(savedCat);
-            }
-            pet.setOwner(owner);
-            pet.setBirthDate(LocalDate.now());
-            pet.setName("Pet #"+i);
+            Pet pet = Pet.builder()
+                    .petType(i < numCreated / 2 ? savedDog : savedCat)
+                    .owner(owner)
+                    .birthDate(LocalDate.now())
+                    .name("Pet #"+i)
+                    .build();
 
             owner.getPets().add(pet);
 
@@ -79,16 +78,13 @@ public class DataInitializer implements CommandLineRunner {
         Specialty surgerySaved = specialtyService.save(surgery);
 
         for (long i = 0; i < numCreated; i++) {
-            Vet vet = new Vet();
-            vet.setFirstName("VetFirstName#"+i);
-            vet.setLastName("VetLastName#"+i);
+            Vet vet = Vet.builder()
+                    .firstName("VetFirstName#"+i)
+                    .lastName("VetLastName#"+i)
+                    .specialties(new HashSet<>())
+                    .build();
 
-            if (i < numCreated / 2) {
-                vet.getSpecialties().add(radiologySaved);
-            }
-            else {
-                vet.getSpecialties().add(surgerySaved);
-            }
+            vet.getSpecialties().add(i < numCreated / 2 ? radiologySaved : surgerySaved);
 
             vetService.save(vet);
         }
