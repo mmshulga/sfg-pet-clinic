@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service;
 public class VisitMapService extends AbstractMapService<Visit, Long> implements VisitService {
     @Override
     public Visit save(Visit object) {
-        return save(counter.getAndIncrement(), object);
+        if (object.getId() != null) {
+            return save(object.getId(), object);
+        }
+        else {
+            return save(counter.getAndIncrement(), object);
+        }
     }
 }

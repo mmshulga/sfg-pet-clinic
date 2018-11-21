@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service;
 public class PetTypeMapService extends AbstractMapService<PetType, Long> implements PetTypeService {
     @Override
     public PetType save(PetType object) {
-        return save(counter.getAndIncrement(), object);
+        if (object.getId() != null) {
+            return save(object.getId(), object);
+        }
+        else {
+            return save(counter.getAndIncrement(), object);
+        }
     }
 }

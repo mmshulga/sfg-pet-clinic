@@ -43,11 +43,20 @@ public class OwnerMapService extends AbstractMapService<Owner, Long> implements 
             });
         }
 
-        return save(counter.getAndIncrement(), object);
+        if (object.getId() != null) {
+            return save(object.getId(), object);
+        }
+        else {
+            return save(counter.getAndIncrement(), object);
+        }
     }
 
     @Override
     public Owner findByLastName(String lastName) {
-        return null;
+        return this.findAll()
+                .stream()
+                .filter(o -> o.getLastName().equals(lastName))
+                .findFirst()
+                .orElse(null);
     }
 }
