@@ -11,6 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,15 +43,6 @@ class OwnerControllerTest {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(ownerController)
                 .build();
-    }
-
-    @Test
-    void findOwners() throws Exception {
-        mockMvc.perform(get("/owners/find"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("notimplemented"));
-
-        verifyZeroInteractions(ownerService);
     }
 
     @Test
@@ -84,5 +77,41 @@ class OwnerControllerTest {
                 .andExpect(model().attribute("owner", hasProperty("id", is(1L))));
 
         verify(ownerService, times(1)).findById(anyLong());
+    }
+
+    @Test
+    void findOwners() throws Exception {
+        mockMvc.perform(get("/owners/find"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/findOwners"))
+                .andExpect(model().attributeExists("owner"));
+
+        verifyZeroInteractions(ownerService);
+    }
+
+    @Test
+    void processFindFormReturnMany() throws Exception {
+        Owner o1 = Owner.builder().id(1L).build();
+        Owner o2 = Owner.builder().id(2L).build();
+        when(ownerService.findAllByLastNameLike(anyString())).thenReturn(Arrays.asList(o1, o2));
+
+        mockMvc.perform(get("/owners/findByLastNameLike"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("owners/ownersList"))
+                .andExpect(model().attribute("owners", hasSize(2)));
+        verify(ownerService, times(1)).findAllByLastNameLike(anyString());
+    }
+
+    @Test
+    void processFindFormReturnOne() throws Exception {
+        Owner o = Owner.builder().id(1L).build();
+        when(ownerService.findAllByLastNameLike(anyString())).thenReturn(Collections.singletonList(o));
+
+        mockMvc.perform(get("/owners/findByLastNameLike"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/owners/1"))
+                .andExpect(model().attributeExists("owner"))
+                .andExpect(model().attribute("owner", hasProperty("id", is(1L))));
+        verify(ownerService, times(1)).findAllByLastNameLike(anyString());
     }
 }
