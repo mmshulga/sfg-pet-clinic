@@ -44,12 +44,12 @@ public class VisitController {
     }
 
     @PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-    public String doCreate(@Valid Visit visit, BindingResult bindingResult) {
+    public String doCreate(@Valid Visit visit, BindingResult bindingResult, @PathVariable Long ownerId) {
         if (bindingResult.hasErrors()) {
             return "pets/createOrUpdateVisitForm";
         }
 
         visitService.save(visit);
-        return "redirect:/owners/{ownerId}";
+        return "redirect:/owners/" + ownerId;
     }
 }
